@@ -44,11 +44,6 @@ class dataset(object):
 
         while True:
             try:
-<<<<<<< HEAD
-                
-=======
-                #测试
->>>>>>> 8d9abb39420e7ee8944404d0a26c64af1ee31960
                 pass
             except StopIteration:
                 break
