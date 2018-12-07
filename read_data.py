@@ -44,6 +44,7 @@ class dataset(object):
 
         while True:
             try:
+                #测试
                 pass
             except StopIteration:
                 break
