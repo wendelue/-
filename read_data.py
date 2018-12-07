@@ -44,7 +44,6 @@ class dataset(object):
 
         while True:
             try:
-                niubis
                 pass
             except StopIteration:
                 break
