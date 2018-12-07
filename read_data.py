@@ -53,6 +53,8 @@ class dataset(object):
             except StopIteration:
                 break
             
-            
-        
-        
+
+if __name__ == '__main__':
+    dataset = dataset('../dataset')
+    print('未完待续...')
+
