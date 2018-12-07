@@ -44,6 +44,7 @@ class dataset(object):
 
         while True:
             try:
+                #ceshi
                 pass
             except StopIteration:
                 break
