@@ -27,7 +27,7 @@ class dataset(object):
         try:
             assert cate in ['training', 'val']
         except AssertionError as ae:
-            print('参数'cate'的值不正确，请输入'training'或者'val'.')
+            print("参数'cate'的值不正确，请输入'training'或者'val'.")
 
         images = os.listdir(self.data_dir)
         random.seed(0)
