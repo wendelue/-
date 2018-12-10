@@ -3,25 +3,20 @@
 #author:wenzhu
 
 import os
-import time
 import random
-
-import numpy as np
-
+import pickle
 
 class dataset(object):
     def __init__(self,data_dir):
         self.data_dir = data_dir
-        self.image_info=[]
+        self.image_path=[]
         self.batch = 10
         
     def read(self, file_name):
-        f = open(file_name,"r")
-        image_info = f.readline()
-        f.close()
-        image_label = image_info[0]
-        image = image_info[1:]
-        return image, image_label
+        file = open(file_name, "rb")
+        data=pickle.load(file)
+        file.close()
+        return data
         
     def load_info(self, cate):
         try:
@@ -34,28 +29,35 @@ class dataset(object):
         random.shuffle(images)
 
         img_num=len(images)
-        if (category == 'training'):
-            images = images[: 0.8 * img_num]
+        if (cate == 'training'):
+            images = images[: int(0.8 * img_num)]
         else:
-            images = images[0.8 * img_num :]
+            images = images[int(0.8 * img_num) :]
             
         for img in images:
-            img_path = os.path.join(data_dir, img)
-            self.image_info.append({'id': img, 'path': img_path})
+            img_path = os.path.join(self.data_dir, img)
+            self.image_path.append(img_path)
             
-    def data_generateor(dataset,cate):
+    def data_generateor(self, cate):
+        
         self.load_info(cate)
 
         while True:
             try:
-                #ceshi
-                pass
+                batch_img = []
+                random_path = random.sample(self.image_path,self.batch)
+                for i in range(self.batch):
+                    path = random_path[i]
+                    data = self.read(path)
+                    batch_img.append(data)
+                yield batch_img
             except StopIteration:
                 break
+            except (GeneratorExit, KeyboardInterrupt):
+                raise
             
 
 if __name__ == '__main__':
     dataset = dataset('../dataset')
-    print('未完待续...')
-#%%
-print('hello,world!')
+    batch_img = dataset.data_generateor('training')
+    print(next(batch_img)[0])
