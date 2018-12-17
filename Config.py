@@ -1,4 +1,6 @@
 #-*- coding:utf-8 -*- 
+#author:wenzhu
+
 
 class Config(object):
     """
@@ -15,9 +17,9 @@ class Config(object):
             'conv3d': (int(15 / dic['pooling_stride']), 101, 101, dic['rand_h_num']),
             'conv2d': (101,101,dic['rand_h_num'])
           }
+
     
     data_dir = '../dataset'
-    model_dir = './model_conv2d'
 
     #is_conv2d = False
     is_conv2d = True
@@ -28,9 +30,9 @@ class Config(object):
     batch = 10
     pred_batch = 100
     
-    EPOCHS = 50  #迭代次数
-    STEPS_PER_EPOCH = 10 #每轮迭代多少个批次
-    VALIDATION_STEPS = 200
+    EPOCHS = 2  #迭代次数
+    STEPS_PER_EPOCH = 40 #每轮迭代多少个批次
+    VALIDATION_STEPS = 20
 
 
 

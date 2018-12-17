@@ -1,4 +1,5 @@
 #-*- coding:utf-8 -*-
+#author:wenzhu
 
 import datetime
 import logging
@@ -23,6 +24,7 @@ from keras.models import Model
 from read_data import dataset
 import mynetworks
 from Config import Config
+from utils import save_data, plot_fig
 
 
 from keras.backend.tensorflow_backend import set_session
@@ -167,7 +169,7 @@ class models(object):
                     "*epoch*", "{epoch:04d}")
 
 
-    def train(self, model, train_generator, val_generator, EPOCHS,is_graph = True):
+    def train(self, model, train_generator, val_generator, net_name, EPOCHS,is_graph = True):
         '''
         训练数据
         '''
@@ -189,29 +191,31 @@ class models(object):
         #     workers = 0
         # else:
         #     workers = multiprocessing.cpu_count()
-        
         history = History()
         history = model.fit_generator(
-                train_generator,
-                initial_epoch=self.epoch,
-                epochs= EPOCHS,
-                steps_per_epoch=self.STEPS_PER_EPOCH,
-                callbacks=callbacks,
-                validation_data=val_generator,
-                validation_steps=self.VALIDATION_STEPS,
-                #max_queue_size=100,
-                #workers=0,
-                #use_multiprocessing=False,
-            )
-
-        self.epoch = max(self.epoch, EPOCHS)
+                    train_generator,
+                    initial_epoch=self.epoch,
+                    epochs= EPOCHS,
+                    steps_per_epoch=self.STEPS_PER_EPOCH,
+                    callbacks=callbacks,
+                    validation_data=val_generator,
+                    validation_steps=self.VALIDATION_STEPS,
+                    #max_queue_size=100,
+                    #workers=0,
+                    #use_multiprocessing=False,
+                )
 
         #model.save('save/train_model.h5')
-        
+        save_data(file_dir='saved_results/'+net_name+'/', filename='val_loss', data=history.history["val_loss"])
+
+        save_data(file_dir='saved_results/'+net_name+'/', filename='train_loss', data=history.history["loss"])
+
         if is_graph:
-            fig, ax1 = plt.subplots(1,1)
-            ax1.plot(history.history["val_loss"])
-            ax1.plot(history.history["loss"])
+            plot_fig(history.history["loss"],history.history["val_loss"],'train_loss','val_loss')
+            # fig, ax1 = plt.subplots(1,1)
+            # ax1.plot(history.history["val_loss"])
+            # ax1.plot(history.history["loss"])
+            # plt.show()
 
     def pred(self, model, val_data):
         '''

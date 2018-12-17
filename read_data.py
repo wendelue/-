@@ -1,4 +1,5 @@
 #-*- coding:utf-8 -*-
+#author:wenzhu
 
 import os
 import random
@@ -117,16 +118,24 @@ class dataset(object):
         '''
         
         self.load_info(cate)
+        bt = 0
+        bv = 0
 
         while True:
             try:
                 batch_img = []
                 if cate == 'training':
-                    random_path = random.sample(self.train_img_path, batch)
+                    batch_path = self.train_img_path[bt * batch : (bt + 1) * batch]
+                    bt += 1
+                    if bt >= len(self.train_img_path) // batch:
+                        bt = 0
                 else:
-                    random_path = random.sample(self.val_img_path, batch)
+                    batch_path = self.val_img_path[bv * batch : (bv + 1) * batch]
+                    bv += 1
+                    if bv >= len(self.val_img_path) // batch:
+                        bv = 0
                 for i in range(batch):
-                    path = random_path[i]
+                    path = batch_path[i]
                     data = self.read(path)
                     batch_img.append(data)
 
@@ -165,11 +174,12 @@ class dataset(object):
 if __name__ == '__main__':
     train_dataset = dataset('../dataset')
     batch_training_generator = train_dataset.data_generateor('training', rand_h=True, rand_h_num=4, height=3, pooling_stride=3)
-    batch_val_generator = train_dataset.data_generateor('val', rand_h=True, rand_h_num=4, height=3, pooling_stride=3,batch=12)
-    batch_training = next(batch_training_generator)
-    batch_val = next(batch_val_generator)
-    print(np.shape(batch_training[0]),np.shape(batch_val[0]))
-    print(batch_training[1], batch_val[1])
+    batch_val_generator = train_dataset.data_generateor('val', rand_h=True, rand_h_num=4, height=3, pooling_stride=3, batch=10)
+    for i in range(900):
+        batch_training = next(batch_training_generator)
+        batch_val = next(batch_val_generator)
+        print(np.shape(batch_training[0]),np.shape(batch_val[0]))
+    #print(batch_training[1], batch_val[1])
 
 
 
