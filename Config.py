@@ -30,9 +30,9 @@ class Config(object):
     batch = 10
     pred_batch = 100
     
-    EPOCHS = 2  #迭代次数
-    STEPS_PER_EPOCH = 40 #每轮迭代多少个批次
-    VALIDATION_STEPS = 20
+    EPOCHS = 50  #迭代次数
+    STEPS_PER_EPOCH = 800 #每轮迭代多少个批次
+    VALIDATION_STEPS = 200
 
 
 
