@@ -83,9 +83,9 @@ class dataset(object):
 
     def load_info(self, cate):
         try:
-            assert cate in ['training', 'val']
+            assert cate in ['training', 'val','pred']
         except AssertionError as ae:
-            print("参数'cate'的值不正确，请输入'training'或者'val'.")
+            print("参数'cate'的值不正确，请输入'training','val' or 'pred'.")
 
         images = os.listdir(self.data_dir)
 
@@ -130,6 +130,8 @@ class dataset(object):
                     if bt >= len(self.train_img_path) // batch:
                         bt = 0
                 else:
+                    if cate == 'pred':
+                        self.val_img_path.sort()
                     batch_path = self.val_img_path[bv * batch : (bv + 1) * batch]
                     bv += 1
                     if bv >= len(self.val_img_path) // batch:
@@ -175,7 +177,7 @@ if __name__ == '__main__':
     train_dataset = dataset('../dataset')
     batch_training_generator = train_dataset.data_generateor('training', rand_h=True, rand_h_num=4, height=3, pooling_stride=3)
     batch_val_generator = train_dataset.data_generateor('val', rand_h=True, rand_h_num=4, height=3, pooling_stride=3, batch=10)
-    for i in range(900):
+    for i in range(20):
         batch_training = next(batch_training_generator)
         batch_val = next(batch_val_generator)
         print(np.shape(batch_training[0]),np.shape(batch_val[0]))

@@ -28,7 +28,7 @@ class Config(object):
     optimizer = 'adam'
     
     batch = 10
-    pred_batch = 100
+    pred_batch = 200
     
     EPOCHS = 50  #迭代次数
     STEPS_PER_EPOCH = 800 #每轮迭代多少个批次

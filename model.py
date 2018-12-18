@@ -169,7 +169,7 @@ class models(object):
                     "*epoch*", "{epoch:04d}")
 
 
-    def train(self, model, train_generator, val_generator, net_name, EPOCHS,is_graph = True):
+    def train(self,model,train_gen,val_gen,net_name,eps,is_graph=True):
         '''
         训练数据
         '''
@@ -193,12 +193,12 @@ class models(object):
         #     workers = multiprocessing.cpu_count()
         history = History()
         history = model.fit_generator(
-                    train_generator,
+                    train_gen,
                     initial_epoch=self.epoch,
-                    epochs= EPOCHS,
+                    epochs= eps,
                     steps_per_epoch=self.STEPS_PER_EPOCH,
                     callbacks=callbacks,
-                    validation_data=val_generator,
+                    validation_data=val_gen,
                     validation_steps=self.VALIDATION_STEPS,
                     #max_queue_size=100,
                     #workers=0,
@@ -211,7 +211,7 @@ class models(object):
         save_data(file_dir='saved_results/'+net_name+'/', filename='train_loss', data=history.history["loss"])
 
         if is_graph:
-            plot_fig(history.history["loss"],history.history["val_loss"],'train_loss','val_loss')
+            plot_fig(history.history["loss"], history.history["val_loss"], 'train_loss', 'val_loss')
             # fig, ax1 = plt.subplots(1,1)
             # ax1.plot(history.history["val_loss"])
             # ax1.plot(history.history["loss"])

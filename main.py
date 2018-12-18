@@ -30,31 +30,29 @@ def train(dataset,network,models,dic,net_name):
 
     #train
     #models.load_weights(models.find_last(),by_name=True)
-    models.train(
-        network,
-        train_img_generator,
-        val_img_generator,
-        net_name=net_name,
-        EPOCHS=Config.EPOCHS,
-        is_graph=True)
+    models.train(network,train_img_generator,val_img_generator,net_name=net_name,eps=Config.EPOCHS,is_graph=True)
 
 
 def predict(dataset,network,models,dic,net_name):
     #测试数据
     #valdata = dataset.
-    val_data = dataset.data_generateor('val', rand_h=dic['rand_h'], rand_h_num=dic['rand_h_num'], height=dic['height'], pooling_stride=dic['pooling_stride'], batch=Config.pred_batch)
-    val_data = next(val_data)
-    #print(np.shape(val_data[0]))
-    pred = models.pred(network, val_data=val_data[0])
+    val_data = dataset.data_generateor('pred', rand_h=dic['rand_h'], rand_h_num=dic['rand_h_num'], height=dic['height'], pooling_stride=dic['pooling_stride'], batch=Config.pred_batch)
+    val_data_sum = []
+    pred_sum=[]
+    for i in range(2000//Config.pred_batch):
+        val_data_i = next(val_data)
+        #print(np.shape(val_data[0]))
+        pred = models.pred(network, val_data=val_data_i[0])
+        val_data_sum.extend(val_data_i[1])
+        pred_sum.extend(pred)
 
     #保存数据
-    real_data = val_data[1]
-    save_data(file_dir='saved_results/' + net_name+'/', filename='predict', data=pred)
-    save_data(file_dir='saved_results/' + net_name+'/', filename='real_data', data=real_data)
+    save_data(file_dir='saved_results/' + net_name+'/', filename='predict', data=pred_sum)
+    save_data(file_dir='saved_results/' + net_name+'/', filename='real_data', data=val_data_sum)
 
     #画图
-    print(np.shape(pred),np.shape(real_data))
-    plot_fig(real_data[:,0],pred[:,0],'real','pred')
+    print(np.shape(pred_sum),np.shape(val_data_sum))
+    plot_fig(val_data_sum, pred_sum, 'real', 'pred')
 
 
 if __name__ == "__main__":
