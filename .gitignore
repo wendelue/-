@@ -1,0 +1,6 @@
+#git忽略如下文件
+__pycache__/
+.vscode/
+models/
+saved_results/
+
