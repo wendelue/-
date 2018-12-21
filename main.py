@@ -14,7 +14,7 @@ from utils import save_data, plot_fig
 
 from keras.utils.vis_utils import plot_model
 from keras.backend.tensorflow_backend import set_session
-os.environ["CUDA_VISIBLE_DEVICES"] = "0"
+os.environ["CUDA_VISIBLE_DEVICES"] = "1"
 
 #设置gpu内存动态增长
 gpu_options = tf.GPUOptions(allow_growth=True)
@@ -57,8 +57,8 @@ def predict(dataset,network,models,dic,net_name):
 
 if __name__ == "__main__":
     dic = Config.dic
-    shape = Config.input_shape['conv2d']
-    network,net_name =mynetworks.model_conv2d(input_shape=shape)
+    shape = Config.input_shape['conv3d']
+    network,net_name =mynetworks.model_conv3d(input_shape=shape)
     plot_model(network, to_file='models/net_fig/' + net_name + '.png', show_shapes=True)
     print("Model structure has saved in 'models/net_fig/"+ net_name+ ".png'")
     print("please input：train or pred!")

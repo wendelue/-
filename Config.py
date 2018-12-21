@@ -21,8 +21,8 @@ class Config(object):
     
     data_dir = '../dataset'
 
-    #is_conv2d = False
-    is_conv2d = True
+    is_conv2d = False
+    #is_conv2d = True
 
     loss = 'mean_squared_error'
     optimizer = 'adam'

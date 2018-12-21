@@ -10,6 +10,7 @@ import PIL.Image as Image
 from Config import Config
 
 class dataset(object):
+    __slots__ = ['data_dir','train_img_path','val_img_path','conv2d']
     def __init__(self,data_dir):
         self.data_dir = data_dir
         self.train_img_path = []
